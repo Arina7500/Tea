@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Ваша корзина - Чайный магазин</title>
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="#">О нас</a> 
+        <a href="catalog.html">Каталог</a> 
+        <a href="#">Журнал о чае</a> 
+        <a href="cart.html">Корзина (<span id="cart-counter">0</span>)</a>
+    </nav>
+
+    <h1 class="cart-title">Ваша корзина</h1>
+    
+    <div class="cart-wrapper">
+        <div id="cart-items-container" class="cart-items-container"></div>
+        
+        <div class="cart-total-section">
+            <div class="cart-total">
+                Итого: <span id="cart-total">0 ₽</span>
+            </div>
+            <div class="button-wrapper">
+                <button class="checkout-btn" onclick="alert('Переход к оформлению заказа (пока не реализовано)')">
+                    Оформить заказ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
+    <script>
+        // Функция для отображения корзины на этой странице
+        function displayCart() {
+            const cart = getCart();
+            const container = document.getElementById('cart-items-container');
+            const totalSpan = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart">
+                        <p>Ваша корзина пуста</p>
+                        <p>Но это никогда не поздно исправить!</p>
+                        <a href="catalog.html">Перейти в каталог</a>
+                    </div>
+                `;
+                totalSpan.textContent = '0 ₽';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h3 class="cart-item-name">${item.name}</h3>
+                            <div class="cart-item-details">
+                                <p class="cart-item-price">${item.price} ₽</p>
+                                <p class="cart-item-subtotal">
+                                    Сумма: <span>${itemTotal} ₽</span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="changeQuantity(${index}, -1)">−</button>
+                            <span class="quantity-value">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                        </div>
+                        
+                        <div class="cart-item-remove">
+                            <button class="remove-btn" onclick="removeItem(${index})">✕</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            totalSpan.textContent = `${total} ₽`;
+        }
+
+        // Запускаем отображение при загрузке страницы
+        document.addEventListener('DOMContentLoaded', displayCart);
+    </script>
+</body>
+</html>

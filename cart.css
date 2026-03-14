@@ -1,0 +1,290 @@
+/* cart.css - стили для страницы корзины */
+
+/* Общие стили */
+body {
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: rgba(228, 104, 220, 0.214);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Навигация (копируем из основного стиля) */
+nav {
+    background-color: rgb(82, 8, 71);
+    padding: 15px 0;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+nav a {
+    color: aliceblue;
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 8px 0;                       
+    transition: all 0.3s ease;
+}
+
+nav a:hover {
+    color: rgb(206, 94, 178);                        
+}
+
+/* Основной контейнер корзины */
+/* Контейнер для товаров в корзине */
+.cart-items-container {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Карточка товара в корзине */
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border: 2px solid rgba(206, 94, 178, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.cart-item:hover {
+    border-color: rgb(206, 94, 178);
+    box-shadow: 0 5px 15px rgba(206, 94, 178, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Левая часть карточки (информация о товаре) */
+.cart-item-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cart-item-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(82, 8, 71);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.cart-item-details {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.cart-item-price {
+    color: rgb(206, 94, 178);
+    font-weight: bold;
+    font-size: 18px;
+    margin: 0;
+    background: rgba(206, 94, 178, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.cart-item-subtotal {
+    color: rgb(82, 8, 71);
+    font-size: 16px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.cart-item-subtotal span {
+    font-weight: bold;
+    color: rgb(206, 94, 178);
+}
+
+/* Центральная часть (количество) */
+.cart-item-quantity {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background: rgba(206, 94, 178, 0.05);
+    padding: 10px 15px;
+    border-radius: 40px;
+    margin: 0 20px;
+}
+
+.quantity-btn {
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 50%;
+    background: white;
+    color: rgb(82, 8, 71);
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 2px solid rgba(206, 94, 178, 0.3);
+}
+
+.quantity-btn:hover {
+    background: rgb(206, 94, 178);
+    color: white;
+    border-color: rgb(206, 94, 178);
+    transform: scale(1.1);
+}
+
+.quantity-value {
+    font-size: 20px;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+    color: rgb(82, 8, 71);
+}
+
+/* Кнопка оформления заказа */
+.checkout-btn {
+    background: rgb(82, 8, 71);
+    color: white;
+    border: none;
+    padding: 18px 50px;
+    font-size: 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(82, 8, 71, 0.3);
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.checkout-btn:hover {
+    background: rgb(206, 94, 178);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(206, 94, 178, 0.4);
+}
+
+.checkout-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(206, 94, 178, 0.3);
+}
+
+.button-wrapper {
+    text-align: center;
+    width: 100%;
+}
+
+/* Правая часть (кнопка удаления) */
+.cart-item-remove {
+    flex: 0.5;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.remove-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 68, 68, 0.1);
+    color: #ff4444;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 68, 68, 0.2);
+}
+
+.remove-btn:hover {
+    background: #ff4444;
+    color: white;
+    transform: scale(1.1);
+    border-color: #ff4444;
+}
+
+/* Дополнительные стили для страницы корзины */
+.cart-title {
+    color: rgb(82, 8, 71);
+    font-size: 42px;
+    border-bottom: 3px solid rgb(206, 94, 178);
+    padding-bottom: 15px;
+    margin: 30px auto 40px;
+    text-align: center;
+    max-width: 1000px;
+}
+
+.cart-wrapper {
+    max-width: 1000px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+    flex: 1;
+}
+
+.cart-total-section {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: right;
+    margin-top: 30px;
+}
+
+.cart-total {
+    font-size: 28px;
+    color: rgb(82, 8, 71);
+    margin-bottom: 20px;
+}
+
+.cart-total span {
+    color: rgb(206, 94, 178);
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgb(82, 8, 71);
+    font-size: 18px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.empty-cart a {
+    color: rgb(206, 94, 178);
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 30px;
+    border: 2px solid rgb(206, 94, 178);
+    border-radius: 30px;
+    transition: all 0.3s;
+}
+
+.empty-cart a:hover {
+    background: rgb(206, 94, 178);
+    color: white;
+}

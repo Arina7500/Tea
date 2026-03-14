@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+        <meta charset="UTF-8">
+        <title> Чайный магазин </title>
+        <link rel="stylesheet" href="C:\Проекты\чайный_магазин\index.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cn-fontsource-yozai/font.css">
+        <script src="cart.js"></script>
+    </head>
+    <body>
+
+        <!--Слой 1-->
+        <div class="bg-top"></div>
+    
+        <!--Слой 2-->
+        <div class="bg-bottom"></div>
+
+        <div class="bg-mid"></div>
+
+        <nav>
+            <a href="C:\Проекты\чайный_магазин\index.html">Главная</a>
+            <a href="">О нас</a> 
+            <a href="catalog.html">Каталог</a> 
+            <a href="">Журнал о чае</a> 
+            <a href="cart.html">Корзина (<span id="cart-counter">0</span>)</a>
+        </nav>
+
+        <h1>Хэ Цзин И</h1>
+        <h5>Гармония Уважение Истина</h5>
+
+        <div>
+            <img src="C:\Проекты\чайный_магазин\изображения\китаец.png" class="chinese">
+        </div>
+
+        <div class="slider-container">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <!--Слайд 1-->
+                    <div class="swiper-slide">
+                        <div class="slide-image">
+                            <img src="изображения/китайский_чай.jpg" alt="Китайский чай">
+                        </div>
+                        <div class="slide-content">
+                            <h3>Китайский чай</h3>
+                            <p>Собирается по старинным рецептам в тот короткий сезон, когда чайный лист достигает совершенства.
+                                Тысячелетние традиции чаеделия в каждой горсти чая.</p>
+                        </div>
+                    </div>
+                    
+                    <!--Слайд 2-->
+                    <div class="swiper-slide">
+                        <div class="slide-image">
+                            <img src="изображения/виды_чаёв.jpg" alt="Виды чаёв">
+                        </div>
+                        <div class="slide-content">
+                            <h3>Виды чаёв</h3>
+                            <p>Чай с гор Фуцзяни, из туманных долин Юньнани и 
+                                с высокогорных плантаций Тайваня — мы привезли для вас лучшие листья со всего Китая.
+                                Каждая провинция Китая хранит свои чайные секреты. Позвольте нам познакомить вас с ними.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!--Слайд-->
+                    <div class="swiper-slide">
+                        <div class="slide-image">
+                            <img src="C:\Проекты\чайный_магазин\изображения\чайная_церимония.jpg" alt="Чайная церемония">
+                        </div>
+                        <div class="slide-content">
+                            <h3>Чайная церемония</h3>
+                            <p>Погрузитесь в атмосферу настоящей китайской чайной церемонии.
+                                Гармония начинается с маленького ритуала. Создайте его для себя.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-button-prev nav-button"></div>
+                <div class="swiper-button-next nav-button"></div>
+                
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+
+        <!-- Карточки -->
+        <div class="cards-container">
+            <h2>Чайная карта</h2>
+            <div class="card">
+                <img src="C:\Проекты\чайный_магазин\изображения\чай.jpg" class="card-image">
+                <div class="card-content">
+                    <h3>Чай</h3>
+                    <p>
+                        В чайной карте представлены чаи, классифицтрованные по степени ферментации. 
+                        Белый, чёрный, зелёный, красный, жёлтый чаи или улуны и пуэры.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="C:\Проекты\чайный_магазин\изображения\чайные_смеси.jpg" class="card-image">
+                <div class="card-content">
+                    <h3>Чайные смеси и травяные чаи</h3>
+                    <p>Раздел содержит травяные чаи и чайные смеси.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="C:\Проекты\чайный_магазин\изображения\чайная_утварь.jpg" class="card-image">
+                <div class="card-content">
+                    <h3>Чайная утварь</h3>
+                    <p>Всё, что может понадобиться для чайной церимонии или просто удобного чаепития находится в этом разделе.
+                    Чайники, пиалы, гайвани, чахаи и многое другое.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <section class="popular-products">
+            <h2>Популярные товары</h2>
+
+            <div class="swiper popular-swiper">
+                <div class="swiper-wrapper">
+
+                    <!--Слайд 1-->
+                    <div class="swiper-slide">
+                        <div class="product-grid">
+                            <div class="product-card">
+                                <div class="product-badge">Хит продаж</div>
+                                <img src="изображения/шу_пуэр.jpg" alt="Пуэр" class="product-image">
+                                <h3>Шу Пуэр</h3>
+                                <p>Выдержанный Пуэр с насыщенным вкусом.</p>
+                                <p class="product-price">1300 ₽/100 г</p>
+                                <button class="product-btn">Купить</button>
+                            </div>
+
+                            <div class="product-card">
+                                <div class="product-badge">Хит продаж</div>
+                                <img src="изображения/те_гуань_инь.jpg" alt="Те Гуань Инь" class="product-image">
+                                <h3>Те Гуань Инь</h3>
+                                <p>Знаменитый улун из провинции Фуцзянь.</p>
+                                <p class="product-price">1050 ₽/100 г</p>
+                                <button class="product-btn">Купить</button>
+                            </div>
+
+                            <div class="product-card">
+                                <div class="product-badge">Новинка</div>
+                                <img src="изображения/юэ_гуан_бай.jpg" alt="Юэ Гуан Бай" class="product-image">
+                                <h3>Юэ Гуан Бай</h3>
+                                <p>Мягкий и нежный белый чай.</p>
+                                <p class="product-price">1000 ₽/100 г</p>
+                                <button class="product-btn">Купить</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Слайд 2-->
+                    <div class="swiper-slide">
+                        <div class="product-grid">
+                            <div class="product-card">
+                                <div class="product-badge">Новинка</div>
+                                <img src="изображения/лунцзин.jpg" alt="Лунцзин" class="product-image">
+                                <h3>Лунцзин</h3>
+                                <p>Знаменитый чай из Ханчжоу.</p>
+                                <p class="product-price">1000 ₽/100 г</p>
+                                <button class="product-btn">Купить</button>
+                            </div>
+
+                            <div class="product-card">
+                                <div class="product-badge">Новинка</div>
+                                <img src="изображения/Чайник_Фарфор_Дукай_Фуцзянь.jpg" alt="Чайник" class="product-image">
+                                <h3>Чайник "Дукай"</h3>
+                                <p>Слив воды плавный, неспешный.</p>
+                                <p class="product-price">1200 ₽</p>
+                                <button class="product-btn">Купить</button>
+                            </div>
+
+                            <div class="product-card">
+                                <div class="product-badge">Хит продаж</div>
+                                <img src="изображения/чайник_рыбы_в_пруду.jpg" alt="Чайник" class="product-image">
+                                <h3>Чайник "Рыбы в пруду"</h3>
+                                <p>Фарфоровый чайник с росписью.</p>
+                                <p class="product-price">1280 ₽</p>
+                                <button class="product-btn">Купить</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Слайд 3-->
+                    <div class="swiper-slide">
+                        <div class="product-grid">
+                            <div class="product-card">
+                                <div class="product-badge">Новинка</div>
+                                <img src="изображения/слон.jpg" alt="Фигурка" class="product-image">
+                                <h3>Фигурка "Благородный слон"</h3>
+                                <p>Символ счастья и удачи.</p>
+                                <p class="product-price">1820 ₽</p>
+                                <button class="product-btn">Купить</button>
+                            </div>
+
+                            <div class="product-card">
+                                <div class="product-badge">Новинка</div>
+                                <img src="изображения/чайница_сакура.jpg" alt="Чайница" class="product-image">
+                                <h3>Чайница "Сакура"</h3>
+                                <p>Чайница из матового белого фарфора.</p>
+                                <p class="product-price">440 ₽</p>
+                                <button class="product-btn">Купить</button>
+                            </div>
+
+                            <div class="product-card">
+                                <div class="product-badge">Хит продаж</div>
+                                <img src="изображения/гайвань_сад.jpg" alt="Гайвань" class="product-image">
+                                <h3>Гайвань "Сад спокойствия"</h3>
+                                <p>Высококачественная гайвань из фарфора.</p>
+                                <p class="product-price">630 ₽</p>
+                                <button class="product-btn">Купить</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="swiper-button-prev popular-prev"></div>
+                <div class="swiper-button-next popular-next"></div>
+
+                <div class="swiper-pagination popular-pagination"></div>
+            </div>
+        </section>
+
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <script src="index.js"></script>
+
+        <section class="information">
+            <h2>Интернет-магазин китайского чая Хэ Цзин И</h2>
+            <h3>Китайский чай с доставкой по всему миру</h3>
+            <img src="изображения/символ_чая.png" class="tea-image">
+            <p>На сегодняшний день мы являемся надежными поставщиками качественного 
+                китайского чая, как на территории России, так и за рубеж. 
+                Хорошо отлаженная логистика позволяет в кратчайшие сроки доставлять 
+                заказы даже в самые отдаленные места. 
+                Сотрудничество с курьерскими службами транспортных компаний обеспечивает максимально 
+                бережную и качественную доставку хрупкой чайной утвари и чая в руки покупателя.
+            </p>
+
+            <h3>Сеть уютных чайных</h3>
+            <img src="изображения/символ_чайной.png" class="tea-image">
+            <p>
+                В наших уютных чайных магазинах посетители могут не только купить китайский 
+                чай, но и продегустировать его перед покупкой. Чайные мастера индивидуально 
+                консультируют каждого в выборе чая и посуды, благодаря чему мы получаем 
+                огромное количество благодарных клиентов, приходящих к нам снова вместе 
+                с друзьями.
+            </p>
+
+            <h3>Команда профессионалов</h3>
+            <img src="изображения/символ_китая.png" class="tea-image">
+            <p>
+                Наша компания состоит из активных молодых людей заинтересованных в развитии. 
+                Среди нас есть настоящие ценители китайского чая, постоянно находящиеся в 
+                поиске чего-то нового и интересного. Есть яркие, творческие личности. 
+                Есть предприниматели, благодаря которым движемся вперед. 
+                Есть дизайнеры, придающие особый стиль. Наши менеджеры профессионалы высокого
+                уровня, к которым вы всегда можете обратиться и получить всю необходимую 
+                информацию.
+            </p>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-top">
+                    <div class="footer-col footer-about">
+                        <h3 class="footer-logo">Хэ Цзин И</h3>
+                        <p class="footer-tagline">Гармония · Уважение · Истина</p>
+                        <p class="footer-description">
+                            Магазин настоящего китайского чая. 
+                            Прямые поставки из чайных провинций Китая.
+                        </p>
+                    </div>
+                    
+                    <div class="footer-col footer-menu">
+                        <h4 class="footer-title">Навигация</h4>
+                        <ul class="footer-links">
+                            <li><a href="index.html">Главная</a></li>
+                            <li><a href="catalog.html">Каталог</a></li>
+                            <li><a href="about.html">О нас</a></li>
+                            <li><a href="journal.html">Журнал о чае</a></li>
+                            <li><a href="contacts.html">Контакты</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col footer-contact">
+                        <h4 class="footer-title">Контакты</h4>
+                        <ul class="footer-contact-list">
+                            <li>
+                                <span>г. Москва, ул. Чайная, д. 42</span>
+                            </li>
+                            <li>
+                                <span>+7 (999) 123-45-67</span>
+                            </li>
+                            <li>
+                                <span>info@hejingyi.ru</span>
+                            </li>
+                            <li>
+                                <span>Пн-Пт: 10:00 - 20:00</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>© 2025 Хэ Цзин И. Все права защищены.</p>
+                    <p class="footer-credits">
+                        <a href="#">Политика конфиденциальности</a> | 
+                        <a href="#">Условия использования</a>
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <div id="sakura-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></div>
+
+    </body>
+</html>
