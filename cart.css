@@ -1,6 +1,3 @@
-/* cart.css - стили для страницы корзины */
-
-/* Общие стили */
 body {
     padding: 0;
     font-family: 'Courier New', Courier, monospace;
@@ -10,7 +7,6 @@ body {
     flex-direction: column;
 }
 
-/* Навигация (копируем из основного стиля) */
 nav {
     background-color: rgb(82, 8, 71);
     padding: 15px 0;
@@ -32,8 +28,6 @@ nav a:hover {
     color: rgb(206, 94, 178);                        
 }
 
-/* Основной контейнер корзины */
-/* Контейнер для товаров в корзине */
 .cart-items-container {
     background: white;
     border-radius: 20px;
@@ -45,7 +39,6 @@ nav a:hover {
     gap: 15px;
 }
 
-/* Карточка товара в корзине */
 .cart-item {
     display: flex;
     align-items: center;
@@ -64,7 +57,6 @@ nav a:hover {
     transform: translateY(-2px);
 }
 
-/* Левая часть карточки (информация о товаре) */
 .cart-item-info {
     flex: 2;
     display: flex;
@@ -111,7 +103,6 @@ nav a:hover {
     color: rgb(206, 94, 178);
 }
 
-/* Центральная часть (количество) */
 .cart-item-quantity {
     flex: 1;
     display: flex;
@@ -157,7 +148,6 @@ nav a:hover {
     color: rgb(82, 8, 71);
 }
 
-/* Кнопка оформления заказа */
 .checkout-btn {
     background: rgb(82, 8, 71);
     color: white;
@@ -192,7 +182,6 @@ nav a:hover {
     width: 100%;
 }
 
-/* Правая часть (кнопка удаления) */
 .cart-item-remove {
     flex: 0.5;
     display: flex;
@@ -223,7 +212,6 @@ nav a:hover {
     border-color: #ff4444;
 }
 
-/* Дополнительные стили для страницы корзины */
 .cart-title {
     color: rgb(82, 8, 71);
     font-size: 42px;
@@ -287,4 +275,176 @@ nav a:hover {
 .empty-cart a:hover {
     background: rgb(206, 94, 178);
     color: white;
+}
+
+/* Модальное окно */
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(82, 8, 71, 0.3);
+    position: relative;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.close-modal {
+    position: absolute;
+    right: 25px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: rgb(82, 8, 71);
+    cursor: pointer;
+    transition: color 0.3s;
+    z-index: 10;
+}
+
+.close-modal:hover {
+    color: rgb(206, 94, 178);
+}
+
+.modal h2 {
+    color: rgb(82, 8, 71);
+    border-bottom: 2px solid rgb(206, 94, 178);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+/* Форма */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: rgb(82, 8, 71);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid rgba(206, 94, 178, 0.3);
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: rgb(206, 94, 178);
+    box-shadow: 0 0 5px rgba(206, 94, 178, 0.5);
+}
+
+.form-group input.error,
+.form-group textarea.error,
+.form-group select.error {
+    border-color: #ff4444;
+    background-color: rgba(255, 68, 68, 0.05);
+}
+
+.error-message {
+    color: #ff4444;
+    font-size: 14px;
+    margin-top: 5px;
+    min-height: 20px;
+}
+
+/* Счетчик символов */
+.char-counter {
+    text-align: right;
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+#charCount {
+    font-weight: bold;
+    color: rgb(206, 94, 178);
+}
+
+/* Кнопки формы */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.cancel-btn,
+.submit-btn {
+    flex: 1;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    border: none;
+}
+
+.cancel-btn {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.cancel-btn:hover {
+    background: #e0e0e0;
+}
+
+.submit-btn {
+    background: rgb(82, 8, 71);
+    color: white;
+}
+
+.submit-btn:hover {
+    background: rgb(206, 94, 178);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(206, 94, 178, 0.4);
+}
+
+.submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
