@@ -1,493 +1,143 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <title> Чайный магазин </title>
-        <link rel="stylesheet" href="/css/catalog.css">
-        <script src="/js/cart.js"></script>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог - Чайный магазин</title>
+    <link rel="stylesheet" href="/css/catalog.css">
+    <script src="/js/cart.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="/">Главная</a>
+        <a href="/about">О нас</a>
+        <a href="/catalog">Каталог</a>
+        <a href="/journal">Журнал о чае</a>
+        <a href="/cart">Корзина (<span id="cart-counter"><%= cartCount %></span>)</a>
+    </nav>
 
-    <body>
-        <nav>
-            <a href="/">Главная</a>
-            <a href="">О нас</a> 
-            <a href="/catalog">Каталог</a> 
-            <a href="">Журнал о чае</a> 
-            <a href="/cart">Корзина (<span id="cart-counter">0</span>)</a>
+    <aside class="sidebar">
+        <img src="/images/icon.png" class="icon-image">
+        <nav class="sidebar-nav">
+            <a href="#tea" class="sidebar-link">Чай</a>
+            <a href="#tea-mixes" class="sidebar-link">Чайные смеси</a>
+            <a href="#utensils" class="sidebar-link">Чайная утварь</a>
+            <a href="#popular" class="sidebar-link">Популярное</a>
         </nav>
+    </aside>
 
-        <aside class="sidebar">
+    <main class="main-content">
+        <!-- Секция Чай -->
+        <section id="tea" class="content-section">
+            <h2>Чай</h2>
+            <div class="product-grid">
+                <% if (teas && teas.length > 0) { %>
+                    <% teas.forEach(product => { %>
+                        <div class="product-card">
+                            <img src="<%= product.image_url %>" alt="<%= product.name %>" class="product-image">
+                            <h3><%= product.name %></h3>
+                            <p><%= product.description %></p>
+                            <p class="product-price"><%= product.price %> ₽/100 г</p>
+                            <button class="product-btn" onclick="addToCart(<%= product.id %>)">Купить</button>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>Товары не найдены</p>
+                <% } %>
+            </div>
+        </section>
 
-            <img src="/изображения/icon.png" class="icon-image">
+        <!-- Секция Чайные смеси -->
+        <section id="tea-mixes" class="content-section">
+            <h2>Чайные смеси</h2>
+            <div class="product-grid">
+                <% if (teaMixes && teaMixes.length > 0) { %>
+                    <% teaMixes.forEach(product => { %>
+                        <div class="product-card">
+                            <img src="<%= product.image_url %>" alt="<%= product.name %>" class="product-image">
+                            <h3><%= product.name %></h3>
+                            <p><%= product.description %></p>
+                            <p class="product-price"><%= product.price %> ₽</p>
+                            <button class="product-btn" onclick="addToCart(<%= product.id %>)">Купить</button>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>Товары не найдены</p>
+                <% } %>
+            </div>
+        </section>
 
-            <nav class="sidebar-nav">
-                <a href="#tea" class="sidebar-link">Чай</a>
-                <a href="#tea-mixes" class="sidebar-link">Чайные смеси</a>
-                <a href="#utensils" class="sidebar-link">Чайная утварь</a>
-                <a href="#popular" class="sidebar-link">Популярное</a>
-            </nav>
-        </aside>
+        <!-- Секция Чайная утварь -->
+        <section id="utensils" class="content-section">
+            <h2>Чайная утварь</h2>
+            <div class="product-grid">
+                <% if (utensils && utensils.length > 0) { %>
+                    <% utensils.forEach(product => { %>
+                        <div class="product-card">
+                            <img src="<%= product.image_url %>" alt="<%= product.name %>" class="product-image">
+                            <h3><%= product.name %></h3>
+                            <p><%= product.description %></p>
+                            <p class="product-price"><%= product.price %> ₽</p>
+                            <button class="product-btn" onclick="addToCart(<%= product.id %>)">Купить</button>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>Товары не найдены</p>
+                <% } %>
+            </div>
+        </section>
 
-        <main class="main-content">
-            <section id="tea" class="content-section">
-                <h2>Чай</h2>
+        <!-- Секция Популярное -->
+        <section id="popular" class="content-section">
+            <h2>Популярное</h2>
+            <div class="product-grid">
+                <% if (popular && popular.length > 0) { %>
+                    <% popular.forEach(product => { %>
+                        <div class="product-card">
+                            <img src="<%= product.image_url %>" alt="<%= product.name %>" class="product-image">
+                            <h3><%= product.name %></h3>
+                            <p><%= product.description %></p>
+                            <p class="product-price"><%= product.price %> ₽</p>
+                            <button class="product-btn" onclick="addToCart(<%= product.id %>)">Купить</button>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>Товары не найдены</p>
+                <% } %>
+            </div>
+        </section>
+    </main>
 
-                <div class="product-grid">
-
-                    <div class="product-card">
-                        <img src="изображения/шу_пуэр.jpg" alt="Пуэр" class="product-image">
-                        <h3>Шу Пуэр</h3>
-                        <p>Выдержанный Пуэр с насыщенным вкусом.</p>
-                        <p class="product-price">1300 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product1', name: 'Шу Пуэр', price: 1300 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/Хо_Шань_Хуан_Я.jpg" alt="Хо Шань Хуан Я" class="product-image">
-                        <h3>Хо Шань Хуан Я</h3>
-                        <p>Достойный и редкий жёлтый чай из провинции Анхой.</p>
-                        <p class="product-price">1020 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product2', name: 'Хо Шань Хуан Я', price: 1020 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/Аньхуа_Хэй.jpg" alt="Аньхуа Хэй Ча “Цянцзань” Цзинь Хуа" class="product-image">
-                        <h3>Аньхуа Хэй Ча “Цянцзань” Цзинь Хуа</h3>
-                        <p>Классический черный чай (Хэй Ча, не красный чай Хун Ча!) из провинции Хунань.</p>
-                        <p class="product-price">400 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product3', name: 'Аньхуа Хэй Ча “Цянцзань” Цзинь', price: 400 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/те_гуань_инь.jpg" alt="Те Гуань Инь" class="product-image">
-                        <h3>Те Гуань Инь</h3>
-                        <p>Знаменитый улун из провинции Фуцзянь.</p>
-                        <p class="product-price">1050 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product4', name: 'Те Гуань Инь', price: 1050 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/юэ_гуан_бай.jpg" alt="Юэ Гуан Бай" class="product-image">
-                        <h3>Юэ Гуан Бай</h3>
-                        <p>Мягкий и нежный белый чай.</p>
-                        <p class="product-price">1000 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product5', name: 'Юэ Гуан Бай', price: 1000 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/лунцзин.jpg" alt="Лунцзин" class="product-image">
-                        <h3>Лунцзин</h3>
-                        <p>Знаменитый чай из Ханчжоу.</p>
-                        <p class="product-price">1000 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product6', name: 'Лунцзин', price: 1000 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/лао.jpg" alt="Лао Ча Тоу" class="product-image">
-                        <h3>Лао Ча Тоу</h3>
-                        <p>Молодые чайные головы из провинции Юньнань 2-ух летней выдержки.</p>
-                        <p class="product-price">400 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product7', name: 'Лао Ча Тоу', price: 400 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/шен_пуэр.jpg" alt="Шен Пуэр" class="product-image">
-                        <h3>Шен Пуэр Со Старых Деревьев</h3>
-                        <p>Шен пуэр из провинции Юньнань из знаменитых чайных садов близ города Мэнхай.</p>
-                        <p class="product-price">550 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product8', name: 'Шен Пуэр Со Старых Деревьев', price: 550 })">
-                            Купить
-                        </button>
-                    </div>
-
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-col footer-about">
+                    <h3 class="footer-logo">Хэ Цзин И</h3>
+                    <p class="footer-tagline">Гармония · Уважение · Истина</p>
                 </div>
-
-            </section>
-
-            <section id="tea-mixes" class="content-section">
-                <h2>Чайные смеси</h2>
-
-                <div class="product-grid">
-
-                    <div class="product-card">
-                        <img src="изображения/пуэр_вишня.jpg" alt="Шу Пуэр Вишня" class="product-image">
-                        <h3>Шу Пуэр Вишня</h3>
-                        <p>Четырехлетний ароматизированный шу пуэр с цельными ягодами вишни.</p>
-                        <p class="product-price">400 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product9', name: 'Шу Пуэр Вишня', price: 400 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/пуэр_апельсин.jpg" alt="Шу Пуэр То Ча Цзинлун Цзюй Цзи С Апельсином" class="product-image">
-                        <h3>Шу Пуэр То Ча "Цзинлун Цзюй Цзи" С Апельсином</h3>
-                        <p>Данный вид прессовки идеально подходит для однократного заваривания в кружке или небольшом чайнике.</p>
-                        <p class="product-price">25 ₽/1 шт</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product10', name: 'Шу Пуэр То Ча Цзинлун Цзюй Цзи', price: 25 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/пуэр_жасмин.jpg" alt="Шу Пуэр Жасмин" class="product-image">
-                        <h3>Шу Пуэр То Ча "Цзинлун Моли Хуа" С Жасмином</h3>
-                        <p>Данный вид прессовки идеально подходит для однократного заваривания в кружке или небольшом чайнике.</p>
-                        <p class="product-price">25 ₽/1 шт</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product11', name: 'Шу Пуэр То Ча Цзинлун Моли Хуа С Жасмином', price: 25 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/пуэр_хризантема.jpg" alt="Шу Пуэр Хризантема" class="product-image">
-                        <h3>Шу Пуэр То Ча "Цзинлун Хуан Цзюй" С Желтой Хризантемой</h3>
-                        <p>Данный вид прессовки идеально подходит для однократного заваривания в кружке или небольшом чайнике.</p>
-                        <p class="product-price">25 ₽/1 шт </p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product12', name: 'Шу Пуэр То Ча Цзинлун Хуан Цзюй С Желтой Хризантемой', price: 25 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/таёжный_сбор.jpg" alt="Таёжный сбор" class="product-image">
-                        <h3>Чай Травяной "Таежный Сбор"</h3>
-                        <p>В состав этого напитка входят гибискус (каркаде), шиповник, мята, фенхель, листья клубники и цветки ромашки.</p>
-                        <p class="product-price">290 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product13', name: 'Чай Травяной Таежный Сбор', price: 290 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/травянной_чай.jpg" alt="Травяной чай" class="product-image">
-                        <h3>Чай Травяной "Сила Трав"</h3>
-                        <p>В состав этого напитка входят чабрец, мята, фенхель, лист клубники, лаванда и шалфей.</p>
-                        <p class="product-price">290 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product14', name: 'Чай Травяной Сила Трав', price: 290 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/малина_мята.jpg" alt="Малина с мятой" class="product-image">
-                        <h3>Чай Травяной "Малина С Мятой"</h3>
-                        <p>В состав напитка "Малина с мятой" входит каркаде, сушеное яблоко, листья мяты и клубники, лепестки календулы, кусочки ягод малины сублимированной.</p>
-                        <p class="product-price">290 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product15', name: 'Чай Травяной Малина С Мятой', price: 290 })">
-                            Купить
-                        </button>
-                    </div>
-
+                <div class="footer-col footer-menu">
+                    <h4 class="footer-title">Навигация</h4>
+                    <ul class="footer-links">
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="/catalog">Каталог</a></li>
+                        <li><a href="/about">О нас</a></li>
+                    </ul>
                 </div>
-
-            </section>
-
-            <section id="utensils" class="content-section">
-                <h2>Чайная утварь</h2>
-
-                <div class="product-grid">
-
-                    <div class="product-card">
-                        <img src="изображения/горы_реки.jpg" alt="Горы И Реки" class="product-image">
-                        <h3>Ча Хэ Фарфор "Горы И Реки"</h3>
-                        <p>Чахэ или "Чайная коробочка" фарфоровая белая, в форме неглубокой чашки с загнутыми внутрь краями, образующими сужение горловины сосуда для удобства пересыпания сухой чайной россыпи.</p>
-                        <p class="product-price">400 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product16', name: 'Ча Хэ Фарфор Горы И Реки', price: 400 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/лотосовый_пруд.jpg" alt="Лотосовый Пруд" class="product-image">
-                        <h3>Ча Хэ Фарфор "Лотосовый Пруд"</h3>
-                        <p>Чахэ или "Чайная коробочка" фарфоровая белая, в форме неглубокой чашки с загнутыми внутрь краями, образующими сужение горловины сосуда для удобства пересыпания сухой чайной россыпи.</p>
-                        <p class="product-price">400 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product17', name: 'Ча Хэ Фарфор Лотосовый Пруд', price: 400 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/Чайник_Фарфор_Дукай_Фуцзянь.jpg" alt="Чайник" class="product-image">
-                        <h3>Чайник "Дукай"</h3>
-                        <p>Слив воды плавный, неспешный.</p>
-                        <p class="product-price">1200 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product18', name: 'Чайник Дукай', price: 1200 })">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/рыбак.jpg" alt="Рыбак" class="product-image">
-                        <h3>Чайник Фарфор "Рыбак"</h3>
-                        <p>Фарфоровый чайник с селадоновой глазурью из Дэхуа с изображением рыбака.</p>
-                        <p class="product-price">920 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product19', name: 'Чайник Фарфор Рыбак', price: 920})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/тыква.jpg" alt="Тыква" class="product-image">
-                        <h3>Чайник Эгоист Текстурная Глина "Ву Лу" Тыква</h3>
-                        <p>Чайник-эгоист малого объема из текстурной глины формы "Ву Лу" или "Тыква".</p>
-                        <p class="product-price">1680 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product20', name: 'Чайник Эгоист Текстурная Глина Ву Лу Тыква', price: 1680})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/чайник_рыбы_в_пруду.jpg" alt="Чайник" class="product-image">
-                        <h3>Чайник "Рыбы в пруду"</h3>
-                        <p>Фарфоровый чайник с росписью.</p>
-                        <p class="product-price">1280 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product21', name: 'Чайник Рыбы в пруду', price: 1280})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/зеленая_глазурь.jpg" alt="Чайник зеленая глазурь" class="product-image">
-                        <h3>Чайник Эгоист Керамика "Зеленая Глазурь"</h3>
-                        <p>Отлично подходит для любых видов чая. Не нарабатывается как глиняные.</p>
-                        <p class="product-price">1180 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product22', name: 'Чайник Эгоист Керамика Зеленая Глазурь', price: 1180})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/слон.jpg" alt="Фигурка" class="product-image">
-                        <h3>Фигурка "Благородный слон"</h3>
-                        <p>Символ счастья и удачи.</p>
-                        <p class="product-price">1820 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product23', name: 'Фигурка Благородный слон', price: 1820})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/молитва.jpg" alt="Молитва" class="product-image">
-                        <h3>Фигурка Для Чайной Церемонии "Молитва"</h3>
-                        <p>Фигурка-миниатюра для чайных церемоний из белого матового фарфора, выполненная в виде монаха во время молитвы.</p>
-                        <p class="product-price">280 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product24', name: 'Фигурка Для Чайной Церемонии Молитва', price: 280})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/монах.jpg" alt="Монах" class="product-image">
-                        <h3>Фигурка Для Чайной Церемонии "Дух Маленький Монах С Шляпой-Ситом"</h3>
-                        <p>Фигурка для чайных церемоний из темной исинской глины, выполненная в виде духа маленького монаха, на голове которого находится шляпа с ситом.</p>
-                        <p class="product-price">1330 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product25', name: 'Фигурка Для Чайной Церемонии Дух Маленький Монах С Шляпой-Ситом', price: 1330})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/чайница_сакура.jpg" alt="Чайница" class="product-image">
-                        <h3>Чайница "Сакура"</h3>
-                        <p>Чайница из матового белого фарфора.</p>
-                        <p class="product-price">440 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product26', name: 'Чайница Сакура', price: 440})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/гайвань_сад.jpg" alt="Гайвань" class="product-image">
-                        <h3>Гайвань "Сад спокойствия"</h3>
-                        <p>Высококачественная гайвань из фарфора.</p>
-                        <p class="product-price">630 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product27', name: 'Гайвань Сад спокойствия', price: 630})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/гайвань_дерево.jpg" alt="Гайвань Дерево" class="product-image">
-                        <h3>Гайвань Фарфор "Дерево" Санкай</h3>
-                        <p>Высококачественный фарфор, роспись с изображением дерева в технике Сань-цай (Санкай).</p>
-                        <p class="product-price">870 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product28', name: 'Гайвань Фарфор Дерево Санкай', price: 870})">
-                            Купить
-                        </button>
-                    </div>
-
-                </div>
-
-            </section>
-
-            <section id="popular" class="content-section">
-                <h2>Популярное</h2>
-
-                <div class="product-grid">
-
-                    <div class="product-card">
-                        <img src="изображения/шу_пуэр.jpg" alt="Пуэр" class="product-image">
-                        <h3>Шу Пуэр</h3>
-                        <p>Выдержанный Пуэр с насыщенным вкусом.</p>
-                        <p class="product-price">1300 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product29', name: 'Шу Пуэр', price: 1300})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/те_гуань_инь.jpg" alt="Те Гуань Инь" class="product-image">
-                        <h3>Те Гуань Инь</h3>
-                        <p>Знаменитый улун из провинции Фуцзянь.</p>
-                        <p class="product-price">1050 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product30', name: 'Те Гуань Инь', price: 1050})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/юэ_гуан_бай.jpg" alt="Юэ Гуан Бай" class="product-image">
-                        <h3>Юэ Гуан Бай</h3>
-                        <p>Мягкий и нежный белый чай.</p>
-                        <p class="product-price">1000 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product31', name: 'Юэ Гуан Бай', price: 1000})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/лунцзин.jpg" alt="Лунцзин" class="product-image">
-                        <h3>Лунцзин</h3>
-                        <p>Знаменитый чай из Ханчжоу.</p>
-                        <p class="product-price">1000 ₽/100 г</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product32', name: 'Лунцзин', price: 1000})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/Чайник_Фарфор_Дукай_Фуцзянь.jpg" alt="Чайник" class="product-image">
-                        <h3>Чайник "Дукай"</h3>
-                        <p>Слив воды плавный, неспешный.</p>
-                        <p class="product-price">1200 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product33', name: 'Лунцзин', price: 1200})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/чайник_рыбы_в_пруду.jpg" alt="Чайник" class="product-image">
-                        <h3>Чайник "Рыбы в пруду"</h3>
-                        <p>Фарфоровый чайник с росписью.</p>
-                        <p class="product-price">1280 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product34', name: 'Чайник Рыбы в пруду', price: 1280})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/слон.jpg" alt="Фигурка" class="product-image">
-                        <h3>Фигурка "Благородный слон"</h3>
-                        <p>Символ счастья и удачи.</p>
-                        <p class="product-price">1820 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product35', name: 'Фигурка Благородный слон', price: 1820})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/чайница_сакура.jpg" alt="Чайница" class="product-image">
-                        <h3>Чайница "Сакура"</h3>
-                        <p>Чайница из матового белого фарфора.</p>
-                        <p class="product-price">440 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product36', name: 'Чайница Сакура', price: 440})">
-                            Купить
-                        </button>
-                    </div>
-
-                    <div class="product-card">
-                        <img src="изображения/гайвань_сад.jpg" alt="Гайвань" class="product-image">
-                        <h3>Гайвань "Сад спокойствия"</h3>
-                        <p>Высококачественная гайвань из фарфора.</p>
-                        <p class="product-price">630 ₽</p>
-                        <button class="product-btn" onclick="addToCart({ id: 'product37', name: 'Гайвань Сад спокойствия', price: 630})">
-                            Купить
-                        </button>
-                    </div>
-
-                </div>
-
-            </section>
-
-        </main>
-
-        <footer class="footer">
-            <div class="footer-container">
-                <div class="footer-top">
-                    <div class="footer-col footer-about">
-                        <h3 class="footer-logo">Хэ Цзин И</h3>
-                        <p class="footer-tagline">Гармония · Уважение · Истина</p>
-                        <p class="footer-description">
-                            Магазин настоящего китайского чая. 
-                            Прямые поставки из чайных провинций Китая.
-                        </p>
-                    </div>
-                    
-                    <div class="footer-col footer-menu">
-                        <h4 class="footer-title">Навигация</h4>
-                        <ul class="footer-links">
-                            <li><a href="index.html">Главная</a></li>
-                            <li><a href="catalog.html">Каталог</a></li>
-                            <li><a href="about.html">О нас</a></li>
-                            <li><a href="journal.html">Журнал о чае</a></li>
-                            <li><a href="contacts.html">Контакты</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="footer-col footer-contact">
-                        <h4 class="footer-title">Контакты</h4>
-                        <ul class="footer-contact-list">
-                            <li>
-                                <span>г. Москва, ул. Чайная, д. 42</span>
-                            </li>
-                            <li>
-                                <span>+7 (999) 123-45-67</span>
-                            </li>
-                            <li>
-                                <span>info@hejingyi.ru</span>
-                            </li>
-                            <li>
-                                <span>Пн-Пт: 10:00 - 20:00</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="footer-bottom">
-                    <p>© 2025 Хэ Цзин И. Все права защищены.</p>
-                    <p class="footer-credits">
-                        <a href="#">Политика конфиденциальности</a> | 
-                        <a href="#">Условия использования</a>
-                    </p>
+                <div class="footer-col footer-contact">
+                    <h4 class="footer-title">Контакты</h4>
+                    <ul class="footer-contact-list">
+                        <li>г. Москва, ул. Чайная, д. 42</li>
+                        <li>+7 (999) 123-45-67</li>
+                        <li>info@hejingyi.ru</li>
+                    </ul>
                 </div>
             </div>
-        </footer>
+            <div class="footer-bottom">
+                <p>© 2025 Хэ Цзин И. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
 
-    </body>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/js/index.js"></script>
+</body>
 </html>

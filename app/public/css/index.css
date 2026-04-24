@@ -85,7 +85,7 @@ body {
     left: 0;
     width: 100%;
     height: 100vh; 
-    background-image: url("изображения/поле_9.jpeg");
+    background-image: url("/images/поле_9.jpeg");
     background-size: cover;
     background-position: top center;
     background-repeat: no-repeat;
@@ -100,7 +100,7 @@ body {
     bottom: 0;                  
     width: 100%;
     height: 2650px;
-    background-image: url("изображения/поле_5.png");
+    background-image: url("/images/поле_5.png");
     background-size: cover;
     background-position: bottom center;
     background-repeat: no-repeat;
@@ -114,7 +114,7 @@ body {
 .slider-container {
     max-width: 100%;
     margin: 0 auto;
-    margin-top: 62px;
+    margin-top: 104px;
     margin-bottom: 0;
     border: 4px solid rgb(114, 5, 96);
 }
@@ -227,7 +227,7 @@ div.nav-button {
     padding: 0 20px;           
     box-sizing: border-box;
     background-color: rgba(253, 251, 254, 0.534); 
-    padding: 10px;                             
+    padding: 10px;                          
 }
 
 .popular-products .product-grid {
@@ -521,7 +521,7 @@ div.nav-button {
     top: -50px; 
     width: 30px;
     height: 30px;
-    background-image: url('изображения/сакура.png'); 
+    background-image: url('/images/сакура.png'); 
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
