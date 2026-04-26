@@ -22,10 +22,10 @@ class ProductModel {
         return result.rows;
     }
 
-    // Получить популярные товары (например, первые 9)
+    // Получить популярные товары 
     async getPopular(limit = 9) {
         const result = await this.db.query(
-            'SELECT * FROM products LIMIT $1',
+            'SELECT * FROM products WHERE is_popular = true ORDER BY id LIMIT $1',
             [limit]
         );
         return result.rows;
@@ -47,6 +47,14 @@ class ProductModel {
             [quantity, productId]
         );
         return result.rows[0];
+    }
+
+    // Получить категории для главной страницы 
+    async getCategories() {
+        const result = await this.db.query(
+            'SELECT name, description, image_url FROM categories ORDER BY sort_order, id'
+        );
+        return result.rows;
     }
 }
 

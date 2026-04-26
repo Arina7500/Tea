@@ -84,141 +84,60 @@
             </div>
         </div>
 
-        <!-- Карточки -->
+        <!-- Динамические карточки категорий из БД -->
         <div class="cards-container">
             <h2>Чайная карта</h2>
-            <div class="card">
-                <img src="/images/чай.jpg" class="card-image" alt="Чай">
-                <div class="card-content">
-                    <h3>Чай</h3>
-                    <p>
-                        В чайной карте представлены чаи, классифицированные по степени ферментации. 
-                        Белый, чёрный, зелёный, красный, жёлтый чаи или улуны и пуэры.
-                    </p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="/images/чайные_смеси.jpg" class="card-image" alt="Чайные смеси">
-                <div class="card-content">
-                    <h3>Чайные смеси и травяные чаи</h3>
-                    <p>Раздел содержит травяные чаи и чайные смеси.</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="/images/чайная_утварь.jpg" class="card-image" alt="Чайная утварь">
-                <div class="card-content">
-                    <h3>Чайная утварь</h3>
-                    <p>Всё, что может понадобиться для чайной церемонии или просто удобного чаепития находится в этом разделе.
-                    Чайники, пиалы, гайвани, чахаи и многое другое.
-                    </p>
-                </div>
+            <div class="category-grid">
+                <% if (categories && categories.length > 0) { %>
+                    <% categories.forEach(category => { %>
+                        <div class="card">
+                            <img src="<%= category.image_url %>" class="card-image" alt="<%= category.name %>">
+                            <div class="card-content">
+                                <h3><%= category.name %></h3>
+                                <p><%= category.description %></p>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>Категории не найдены</p>
+                <% } %>
             </div>
         </div>
 
-
+        <!-- Динамические популярные товары из БД -->
         <section class="popular-products">
             <h2>Популярные товары</h2>
 
             <div class="swiper popular-swiper">
                 <div class="swiper-wrapper">
 
-                    <!--Слайд 1-->
-                    <div class="swiper-slide">
-                        <div class="product-grid">
-                            <div class="product-card">
-                                <div class="product-badge">Хит продаж</div>
-                                <img src="/images/шу_пуэр.jpg" alt="Пуэр" class="product-image">
-                                <h3>Шу Пуэр</h3>
-                                <p>Выдержанный Пуэр с насыщенным вкусом.</p>
-                                <p class="product-price">1300 ₽/100 г</p>
-                                <button class="product-btn">Купить</button>
+                    <% if (popularProducts && popularProducts.length > 0) { %>
+                        <!-- Группируем товары по 3 в слайд -->
+                        <% for (let i = 0; i < popularProducts.length; i += 3) { %>
+                            <div class="swiper-slide">
+                                <div class="product-grid">
+                                    <% for (let j = i; j < i + 3 && j < popularProducts.length; j++) { 
+                                        const product = popularProducts[j];
+                                    %>
+                                        <div class="product-card">
+                                            <% if (product.badge) { %>
+                                                <div class="product-badge"><%= product.badge %></div>
+                                            <% } %>
+                                            <img src="<%= product.image_url %>" alt="<%= product.name %>" class="product-image">
+                                            <h3><%= product.name %></h3>
+                                            <p><%= product.description %></p>
+                                            <p class="product-price"><%= product.price %> ₽</p>
+                                            <button class="product-btn" onclick="addToCart(<%= product.id %>)">Купить</button>
+                                        </div>
+                                    <% } %>
+                                </div>
                             </div>
-
-                            <div class="product-card">
-                                <div class="product-badge">Хит продаж</div>
-                                <img src="/images/те_гуань_инь.jpg" alt="Те Гуань Инь" class="product-image">
-                                <h3>Те Гуань Инь</h3>
-                                <p>Знаменитый улун из провинции Фуцзянь.</p>
-                                <p class="product-price">1050 ₽/100 г</p>
-                                <button class="product-btn">Купить</button>
-                            </div>
-
-                            <div class="product-card">
-                                <div class="product-badge">Новинка</div>
-                                <img src="/images/юэ_гуан_бай.jpg" alt="Юэ Гуан Бай" class="product-image">
-                                <h3>Юэ Гуан Бай</h3>
-                                <p>Мягкий и нежный белый чай.</p>
-                                <p class="product-price">1000 ₽/100 г</p>
-                                <button class="product-btn">Купить</button>
-                            </div>
+                        <% } %>
+                    <% } else { %>
+                        <div class="swiper-slide">
+                            <p>Товары не найдены</p>
                         </div>
-                    </div>
-
-                    <!--Слайд 2-->
-                    <div class="swiper-slide">
-                        <div class="product-grid">
-                            <div class="product-card">
-                                <div class="product-badge">Новинка</div>
-                                <img src="/images/лунцзин.jpg" alt="Лунцзин" class="product-image">
-                                <h3>Лунцзин</h3>
-                                <p>Знаменитый чай из Ханчжоу.</p>
-                                <p class="product-price">1000 ₽/100 г</p>
-                                <button class="product-btn">Купить</button>
-                            </div>
-
-                            <div class="product-card">
-                                <div class="product-badge">Новинка</div>
-                                <img src="/images/чайник_дукай.jpg" alt="Чайник" class="product-image">
-                                <h3>Чайник "Дукай"</h3>
-                                <p>Слив воды плавный, неспешный.</p>
-                                <p class="product-price">1200 ₽</p>
-                                <button class="product-btn">Купить</button>
-                            </div>
-
-                            <div class="product-card">
-                                <div class="product-badge">Хит продаж</div>
-                                <img src="/images/чайник_рыбы_в_пруду.jpg" alt="Чайник" class="product-image">
-                                <h3>Чайник "Рыбы в пруду"</h3>
-                                <p>Фарфоровый чайник с росписью.</p>
-                                <p class="product-price">1280 ₽</p>
-                                <button class="product-btn">Купить</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--Слайд 3-->
-                    <div class="swiper-slide">
-                        <div class="product-grid">
-                            <div class="product-card">
-                                <div class="product-badge">Новинка</div>
-                                <img src="/images/слон.jpg" alt="Фигурка" class="product-image">
-                                <h3>Фигурка "Благородный слон"</h3>
-                                <p>Символ счастья и удачи.</p>
-                                <p class="product-price">1820 ₽</p>
-                                <button class="product-btn">Купить</button>
-                            </div>
-
-                            <div class="product-card">
-                                <div class="product-badge">Новинка</div>
-                                <img src="/images/чайница_сакура.jpg" alt="Чайница" class="product-image">
-                                <h3>Чайница "Сакура"</h3>
-                                <p>Чайница из матового белого фарфора.</p>
-                                <p class="product-price">440 ₽</p>
-                                <button class="product-btn">Купить</button>
-                            </div>
-
-                            <div class="product-card">
-                                <div class="product-badge">Хит продаж</div>
-                                <img src="/images/гайвань_сад.jpg" alt="Гайвань" class="product-image">
-                                <h3>Гайвань "Сад спокойствия"</h3>
-                                <p>Высококачественная гайвань из фарфора.</p>
-                                <p class="product-price">630 ₽</p>
-                                <button class="product-btn">Купить</button>
-                            </div>
-                        </div>
-                    </div>
+                    <% } %>
 
                 </div>
 
