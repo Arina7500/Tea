@@ -1,0 +1,10 @@
+# Переменные окружения
+.env
+.env.local
+.env.*.local
+
+# Зависимости
+node_modules/
+
+# Данные Docker
+postgres_data/

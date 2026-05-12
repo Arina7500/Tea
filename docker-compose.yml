@@ -1,24 +1,40 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15-alpine
     container_name: tea-shop-db
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=tea_shop
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: tea_shop
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./sql:/docker-entrypoint-initdb.d:ro
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - ./services/app/sql:/docker-entrypoint-initdb.d:ro
+    networks:
+      - tea-network
+
+  app:
+    build: ./services/app
+    container_name: tea-shop-app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: tea_shop
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+    depends_on:
+      - postgres
+    networks:
+      - tea-network
 
 volumes:
   postgres_data:
+
+networks:
+  tea-network:
+    driver: bridge

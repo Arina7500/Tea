@@ -1,11 +1,8 @@
-// Модель для работы с корзиной 
-
 class CartModel {
     constructor(db) {
-        this.db = db; // Внедрение зависимости (DI)
+        this.db = db;
     }
 
-    // Получить или создать сессию корзины
     async getOrCreateSession(sessionId) {
         let result = await this.db.query(
             'SELECT id FROM cart_sessions WHERE session_id = $1',
@@ -22,22 +19,19 @@ class CartModel {
         return result.rows[0].id;
     }
 
-    // Получить все товары в корзине с деталями
     async getCartItems(sessionId) {
         const session = await this.getOrCreateSession(sessionId);
         
-        const result = await this.db.query(
-            `SELECT ci.product_id, ci.quantity, p.name, p.price, p.image_url
-             FROM cart_items ci
-             JOIN products p ON ci.product_id = p.id
-             WHERE ci.cart_session_id = $1`,
-            [session]
-        );
+        const result = await this.db.query(`
+            SELECT ci.product_id, ci.quantity, p.name, p.price, p.image_url
+            FROM cart_items ci
+            JOIN products p ON ci.product_id = p.id
+            WHERE ci.cart_session_id = $1
+        `, [session]);
         
         return result.rows;
     }
 
-    // Добавить товар в корзину
     async addItem(sessionId, productId, quantity = 1) {
         const session = await this.getOrCreateSession(sessionId);
         
@@ -52,7 +46,6 @@ class CartModel {
         return true;
     }
 
-    // Обновить количество товара
     async updateQuantity(sessionId, productId, quantity) {
         const session = await this.getOrCreateSession(sessionId);
         
@@ -68,7 +61,6 @@ class CartModel {
         return true;
     }
 
-    // Удалить товар из корзины
     async removeItem(sessionId, productId) {
         const session = await this.getOrCreateSession(sessionId);
         
@@ -80,7 +72,6 @@ class CartModel {
         return true;
     }
 
-    // Очистить корзину
     async clearCart(sessionId) {
         const session = await this.getOrCreateSession(sessionId);
         
@@ -92,7 +83,6 @@ class CartModel {
         return true;
     }
 
-    // Получить общее количество товаров в корзине
     async getCartCount(sessionId) {
         const session = await this.getOrCreateSession(sessionId);
         
