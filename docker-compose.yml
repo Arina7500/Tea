@@ -11,7 +11,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./services/app/sql:/docker-entrypoint-initdb.d:ro
+      - ./services/app/sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./services/app/sql/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
     networks:
       - tea-network
 

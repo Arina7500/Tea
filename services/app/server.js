@@ -6,30 +6,38 @@ const { Pool } = require('pg');
 
 const app = express();
 
-// Подключение к БД
-const db = new Pool({
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432,
-    database: process.env.DB_NAME || 'tea_shop',
-    user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres',
-});
+// DI контейнер
+function createContainer() {
+    // Подключение к БД
+    const db = new Pool({
+        host: process.env.DB_HOST || 'localhost',
+        port: process.env.DB_PORT || 5432,
+        database: process.env.DB_NAME || 'tea_shop',
+        user: process.env.DB_USER || 'postgres',
+        password: process.env.DB_PASSWORD || 'postgres',
+    });
 
-// Проверка подключения
-db.connect((err) => {
-    if (err) {
-        console.error('Ошибка подключения к БД:', err.message);
-    } else {
-        console.log('Подключение к PostgreSQL успешно');
-    }
-});
+    // Проверка подключения 
+    db.connect((err) => {
+        if (err) {
+            console.error('Ошибка подключения к БД:', err.message);
+        } else {
+            console.log('Подключение к PostgreSQL успешно');
+        }
+    });
 
-// Модели
-const ProductModel = require('./app/models/ProductModel');
-const CartModel = require('./app/models/CartModel');
+    // Репозитории 
+    const ProductRepository = require('./app/models/ProductRepository');
+    const CartRepository = require('./app/models/CartRepository');
 
-const productModel = new ProductModel(db);
-const cartModel = new CartModel(db);
+    const productRepo = new ProductRepository(db);
+    const cartRepo = new CartRepository(db);
+
+    return { db, productRepo, cartRepo };
+}
+
+// Инициализация зависимостей
+const { db, productRepo, cartRepo } = createContainer();
 
 // Настройка express
 app.set('view engine', 'ejs');
@@ -44,22 +52,22 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'secret-key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } 
+    cookie: { secure: false }
 }));
 
-// Статические файлы 
+// Статические файлы
 app.use('/css', express.static(path.join(__dirname, 'app/public/css')));
 app.use('/js', express.static(path.join(__dirname, 'app/public/js')));
 app.use('/images', express.static(path.join(__dirname, 'app/public/images')));
 
-// CRUD для корзины
+// API для корзины (CRUD) 
 
 // READ - получить корзину
 app.get('/api/cart', async (req, res) => {
     try {
         const sessionId = req.session.id;
-        const items = await cartModel.getCartItems(sessionId);
-        const count = await cartModel.getCartCount(sessionId);
+        const items = await cartRepo.getCartItems(sessionId);
+        const count = await cartRepo.getCartCount(sessionId);
         const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         
         res.json({ items, total, count });
@@ -74,7 +82,6 @@ app.post('/api/cart/add', async (req, res) => {
     try {
         let { productId, quantity = 1 } = req.body;
         
-        // Валидация входных данных
         productId = parseInt(productId);
         quantity = parseInt(quantity);
         
@@ -86,8 +93,8 @@ app.post('/api/cart/add', async (req, res) => {
         }
         
         const sessionId = req.session.id;
-        await cartModel.addItem(sessionId, productId, quantity);
-        const count = await cartModel.getCartCount(sessionId);
+        await cartRepo.addItem(sessionId, productId, quantity);
+        const count = await cartRepo.getCartCount(sessionId);
         
         res.json({ success: true, count });
     } catch (error) {
@@ -96,12 +103,11 @@ app.post('/api/cart/add', async (req, res) => {
     }
 });
 
-// UPDATE - обновить количество товара в корзине
+// UPDATE - обновить количество товара
 app.put('/api/cart/update', async (req, res) => {
     try {
         let { productId, quantity } = req.body;
         
-        // Валидация входных данных
         productId = parseInt(productId);
         quantity = parseInt(quantity);
         
@@ -113,8 +119,8 @@ app.put('/api/cart/update', async (req, res) => {
         }
         
         const sessionId = req.session.id;
-        await cartModel.updateQuantity(sessionId, productId, quantity);
-        const count = await cartModel.getCartCount(sessionId);
+        await cartRepo.updateQuantity(sessionId, productId, quantity);
+        const count = await cartRepo.getCartCount(sessionId);
         
         res.json({ success: true, count });
     } catch (error) {
@@ -133,8 +139,8 @@ app.delete('/api/cart/remove/:productId', async (req, res) => {
         }
         
         const sessionId = req.session.id;
-        await cartModel.removeItem(sessionId, productId);
-        const count = await cartModel.getCartCount(sessionId);
+        await cartRepo.removeItem(sessionId, productId);
+        const count = await cartRepo.getCartCount(sessionId);
         
         res.json({ success: true, count });
     } catch (error) {
@@ -143,20 +149,16 @@ app.delete('/api/cart/remove/:productId', async (req, res) => {
     }
 });
 
-// Серверный рендеринг EJS
+// Страницы
 
 // Главная страница
 app.get('/', async (req, res) => {
     try {
-        const categories = await productModel.getCategories();
-        const popularProducts = await productModel.getPopular(9);
-        const cartCount = await cartModel.getCartCount(req.session.id);
+        const categories = await productRepo.getCategories();
+        const popularProducts = await productRepo.getPopular(9);
+        const cartCount = await cartRepo.getCartCount(req.session.id);
         
-        res.render('index', { 
-            categories, 
-            popularProducts, 
-            cartCount 
-        });
+        res.render('index', { categories, popularProducts, cartCount });
     } catch (error) {
         console.error('Ошибка загрузки главной страницы:', error);
         res.status(500).send('Ошибка сервера');
@@ -166,19 +168,13 @@ app.get('/', async (req, res) => {
 // Страница каталога
 app.get('/catalog', async (req, res) => {
     try {
-        const teas = await productModel.getByCategory('Чай');
-        const teaMixes = await productModel.getByCategory('Чайные смеси');
-        const utensils = await productModel.getByCategory('Чайная утварь');
-        const popular = await productModel.getPopular(9);
-        const cartCount = await cartModel.getCartCount(req.session.id);
+        const teas = await productRepo.getByCategory('Чай');
+        const teaMixes = await productRepo.getByCategory('Чайные смеси');
+        const utensils = await productRepo.getByCategory('Чайная утварь');
+        const popular = await productRepo.getPopular(9);
+        const cartCount = await cartRepo.getCartCount(req.session.id);
         
-        res.render('catalog', { 
-            teas, 
-            teaMixes, 
-            utensils, 
-            popular, 
-            cartCount 
-        });
+        res.render('catalog', { teas, teaMixes, utensils, popular, cartCount });
     } catch (error) {
         console.error('Ошибка загрузки каталога:', error);
         res.status(500).send('Ошибка сервера');
@@ -188,42 +184,30 @@ app.get('/catalog', async (req, res) => {
 // Страница корзины
 app.get('/cart', async (req, res) => {
     try {
-        const cartItems = await cartModel.getCartItems(req.session.id);
-        const cartCount = await cartModel.getCartCount(req.session.id);
+        const cartItems = await cartRepo.getCartItems(req.session.id);
+        const cartCount = await cartRepo.getCartCount(req.session.id);
         
         let total = 0;
         cartItems.forEach(item => {
             total += item.price * item.quantity;
         });
         
-        res.render('cart', { 
-            cartCount,
-            total,
-            cartItems 
-        });
+        res.render('cart', { cartCount, total, cartItems });
     } catch (error) {
         console.error('Ошибка загрузки корзины:', error);
         res.status(500).send('Ошибка сервера');
     }
 });
 
+// Заказы
+
 // Создание заказа
 app.post('/api/orders', async (req, res) => {
     try {
-        const {
-            name,
-            phone,
-            email,
-            address,
-            deliveryDate,
-            comment,
-            payment,
-            items
-        } = req.body;
-        
+        const { name, phone, email, address, deliveryDate, comment, payment, items } = req.body;
         const sessionId = req.session.id;
         
-        // Валидация входных данных
+        // Валидация
         if (!name || name.trim().length < 5) {
             return res.status(400).json({ error: 'Введите полное ФИО' });
         }
@@ -249,7 +233,7 @@ app.post('/api/orders', async (req, res) => {
             totalAmount += item.price * item.quantity;
         }
         
-        // Сохраняем заказ в базу данных 
+        // Сохраняем заказ
         const orderResult = await db.query(
             `INSERT INTO orders 
              (session_id, customer_name, customer_phone, customer_email, 
@@ -271,22 +255,17 @@ app.post('/api/orders', async (req, res) => {
             );
         }
         
-        // Очищаем корзину после оформления заказа
-        await cartModel.clearCart(sessionId);
+        // Очищаем корзину
+        await cartRepo.clearCart(sessionId);
         
-        res.json({ 
-            success: true, 
-            orderId: orderId,
-            totalAmount: totalAmount
-        });
-        
+        res.json({ success: true, orderId, totalAmount });
     } catch (error) {
         console.error('Ошибка создания заказа:', error);
         res.status(500).json({ error: 'Ошибка сервера' });
     }
 });
 
-// Вспомогательные функции валидации
+
 function validatePhone(phone) {
     const phoneRegex = /^(\+7|8)[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$/;
     return phoneRegex.test(phone.replace(/\s+/g, ''));
