@@ -27,9 +27,9 @@ function createContainer() {
 
     db.connect((err) => {
         if (err) {
-            console.error('❌ Ошибка подключения к БД:', err.message);
+            console.error('Ошибка подключения к БД:', err.message);
         } else {
-            console.log('✅ Подключение к PostgreSQL успешно');
+            console.log('Подключение к PostgreSQL успешно');
         }
     });
 
