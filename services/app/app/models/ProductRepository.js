@@ -1,3 +1,7 @@
+const Product = require('./Product');
+const Category = require('./Category');
+const CartItem = require('./CartItem');
+
 class ProductRepository {
     constructor(db) {
         this.db = db;
@@ -10,7 +14,7 @@ class ProductRepository {
             LEFT JOIN categories c ON p.category_id = c.id 
             ORDER BY p.id
         `);
-        return result.rows;
+        return result.rows.map(row => new Product(row));
     }
 
     async getByCategory(categoryName) {
@@ -21,7 +25,7 @@ class ProductRepository {
             WHERE c.name = $1 
             ORDER BY p.id
         `, [categoryName]);
-        return result.rows;
+        return result.rows.map(row => new Product(row));
     }
 
     async getPopular(limit = 9) {
@@ -33,7 +37,7 @@ class ProductRepository {
             ORDER BY p.id 
             LIMIT $1
         `, [limit]);
-        return result.rows;
+        return result.rows.map(row => new Product(row));
     }
 
     async getById(id) {
@@ -43,7 +47,14 @@ class ProductRepository {
             LEFT JOIN categories c ON p.category_id = c.id 
             WHERE p.id = $1
         `, [id]);
-        return result.rows[0] || null;
+        return result.rows[0] ? new Product(result.rows[0]) : null;
+    }
+
+    async getCategories() {
+        const result = await this.db.query(
+            'SELECT * FROM categories ORDER BY sort_order, id'
+        );
+        return result.rows.map(row => new Category(row));
     }
 
     async updateStock(productId, quantity) {
@@ -52,13 +63,6 @@ class ProductRepository {
             [quantity, productId]
         );
         return result.rows[0];
-    }
-
-    async getCategories() {
-        const result = await this.db.query(
-            'SELECT name, description, image_url FROM categories ORDER BY sort_order, id'
-        );
-        return result.rows;
     }
 }
 

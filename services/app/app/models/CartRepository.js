@@ -1,3 +1,5 @@
+const CartItem = require('./CartItem');
+
 class CartRepository {
     constructor(db) {
         this.db = db;
@@ -29,7 +31,12 @@ class CartRepository {
             WHERE ci.cart_session_id = $1
         `, [session]);
         
-        return result.rows;
+        return result.rows.map(row => new CartItem(row));
+    }
+
+    async getCartItemsJSON(sessionId) {
+        const items = await this.getCartItems(sessionId);
+        return items.map(item => item.toJSON());
     }
 
     async addItem(sessionId, productId, quantity = 1) {
@@ -92,6 +99,73 @@ class CartRepository {
         );
         
         return parseInt(result.rows[0].total);
+    }
+
+    async getCartTotal(sessionId) {
+        const session = await this.getOrCreateSession(sessionId);
+        
+        const result = await this.db.query(
+            `SELECT COALESCE(SUM(p.price * ci.quantity), 0) as total
+             FROM cart_items ci
+             JOIN products p ON ci.product_id = p.id
+             WHERE ci.cart_session_id = $1`,
+            [session]
+        );
+        
+        return parseFloat(result.rows[0].total);
+    }
+
+    async createOrder(sessionId, name, phone, email, address, deliveryDate, comment, payment, items) {
+        const client = await this.db.getClient();
+        
+        try {
+            await client.query('BEGIN');
+            
+            const session = await this.getOrCreateSession(sessionId);
+            
+            const totalResult = await client.query(
+                `SELECT COALESCE(SUM(p.price * ci.quantity), 0) as total
+                 FROM cart_items ci
+                 JOIN products p ON ci.product_id = p.id
+                 WHERE ci.cart_session_id = $1`,
+                [session]
+            );
+            const totalAmount = parseFloat(totalResult.rows[0].total);
+            
+            const orderResult = await client.query(
+                `INSERT INTO orders 
+                 (session_id, customer_name, customer_phone, customer_email, 
+                  delivery_address, delivery_date, comment, payment_method, total_amount)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+                 RETURNING id`,
+                [sessionId, name, phone, email, address, deliveryDate, comment || null, payment, totalAmount]
+            );
+            
+            const orderId = orderResult.rows[0].id;
+            
+            for (const item of items) {
+                await client.query(
+                    `INSERT INTO order_items 
+                     (order_id, product_id, product_name, quantity, price_at_time)
+                     VALUES ($1, $2, $3, $4, $5)`,
+                    [orderId, item.product_id, item.name, item.quantity, item.price]
+                );
+            }
+            
+            await client.query(
+                `DELETE FROM cart_items WHERE cart_session_id = $1`,
+                [session]
+            );
+            
+            await client.query('COMMIT');
+            
+            return { orderId, totalAmount };
+        } catch (error) {
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
     }
 }
 
